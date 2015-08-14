@@ -184,36 +184,36 @@ extern class All {
 	static function putpixel(bitmap:BITMAP_OBJECT, x:Int, y:Int, colour:Int):Void;
 	static function clear_bitmap(bitmap:BITMAP_OBJECT):Void;
 	static function clear_to_color(bitmap:BITMAP_OBJECT, colour:Int):Void;
-	static function line(bitmap:BITMAP_OBJECT, x1:Int, y1:Int, x2:Int, y2:Int, colour:Int, width:Float):Void;
-	static function vline(bitmap:BITMAP_OBJECT, x:Int, y1:Int, y2:Int, colour:Int, width:Float):Void;
-	static function hline(bitmap:BITMAP_OBJECT, x1:Int, y:Int, x2:Int, colour:Int, width:Float):Void;
-	static function triangle(bitmap:BITMAP_OBJECT, x1:Int, y1:Int, x2:Int, y2:Int, x3:Int, y3:Int, colour:Int, width:Float):Void;
-	static function trianglefill(bitmap:BITMAP_OBJECT, x1:Int, y1:Int, x2:Int, y2:Int, x3:Int, y3:Int, colour:Int):Void;
-	static function polygon(bitmap:BITMAP_OBJECT, vertices:Int, points:Array<Int>, colour:Int, width:Float):Void;
-	static function polygonfill(bitmap:BITMAP_OBJECT, vertices:Int, points:Array<Int>, colour:Int):Void;
-	static function rect(bitmap:BITMAP_OBJECT, x1:Int, y1:Int, x2:Int, y2:Int, colour:Int, width:Float):Void;
-	static function rectfill(bitmap:BITMAP_OBJECT, x1:Int, y1:Int, x2:Int, y2:Int, colour:Int):Void;
-	static function circle(bitmap:BITMAP_OBJECT, x:Int, y:Int, radius:Float, colour:Int, width:Float):Void;
-	static function circlefill(bitmap:BITMAP_OBJECT, x:Int, y:Int, radius:Float, colour:Int):Void;
-	static function arc(bitmap:BITMAP_OBJECT, x:Int, y:Int, ang1:Float, ang2:Float, colour:Int, r:Float, width:Float):Void;
-	static function arcfill(bitmap:BITMAP_OBJECT, x:Int, y:Int, ang1:Float, ang2:Float, colour:Int, r:Float):Void;
+	static function line(bitmap:BITMAP_OBJECT, x1:Float, y1:Float, x2:Float, y2:Float, colour:Int, width:Float):Void;
+	static function vline(bitmap:BITMAP_OBJECT, x:Float, y1:Float, y2:Float, colour:Int, width:Float):Void;
+	static function hline(bitmap:BITMAP_OBJECT, x1:Float, y:Float, x2:Float, colour:Int, width:Float):Void;
+	static function triangle(bitmap:BITMAP_OBJECT, x1:Float, y1:Float, x2:Float, y2:Float, x3:Float, y3:Float, colour:Int, width:Float):Void;
+	static function trianglefill(bitmap:BITMAP_OBJECT, x1:Float, y1:Float, x2:Float, y2:Float, x3:Float, y3:Float, colour:Int):Void;
+	static function polygon(bitmap:BITMAP_OBJECT, vertices:Int, points:Array<Float>, colour:Int, width:Float):Void;
+	static function polygonfill(bitmap:BITMAP_OBJECT, vertices:Int, points:Array<Float>, colour:Int):Void;
+	static function rect(bitmap:BITMAP_OBJECT, x1:Float, y1:Float, x2:Float, y2:Float, colour:Int, width:Float):Void;
+	static function rectfill(bitmap:BITMAP_OBJECT, x1:Float, y1:Float, x2:Float, y2:Float, colour:Int):Void;
+	static function circle(bitmap:BITMAP_OBJECT, x:Float, y:Float, radius:Float, colour:Int, width:Float):Void;
+	static function circlefill(bitmap:BITMAP_OBJECT, x:Float, y:Float, radius:Float, colour:Int):Void;
+	static function arc(bitmap:BITMAP_OBJECT, x:Float, y:Float, ang1:Float, ang2:Float, colour:Int, r:Float, width:Float):Void;
+	static function arcfill(bitmap:BITMAP_OBJECT, x:Float, y:Float, ang1:Float, ang2:Float, colour:Int, r:Float):Void;
 	
 	// BLITTING AND SPRITES
-	static function draw_sprite(bmp:BITMAP_OBJECT, sprite:Dynamic, x:Int, y:Int):Void;
-	static function stretch_sprite(bmp:BITMAP_OBJECT, sprite:Dynamic, x:Int, y:Int, w:Float, h:Float):Void;
-	static function rotate_sprite(bmp:BITMAP_OBJECT, sprite:Dynamic, x:Int, y:Int, angle:Float):Void;
-	static function pivot_sprite(bmp:BITMAP_OBJECT, sprite:Dynamic, x:Int, y:Int, cx:Int, cy:Int, angle:Float):Void;
-	static function rotate_scaled_sprite(bmp:BITMAP_OBJECT, sprite:Dynamic, x:Int, y:Int, angle:Float, scale:Float):Void;
-	static function pivot_scaled_sprite(bmp:BITMAP_OBJECT, sprite:Dynamic, x:Int, y:Int, cx:Int, cy:Int, angle:Float, scale:Float):Void;
+	static function draw_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float):Void;
+	static function stretch_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, w:Float, h:Float):Void;
+	static function rotate_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, angle:Float):Void;
+	static function pivot_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, cx:Float, cy:Float, angle:Float):Void;
+	static function rotate_scaled_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, angle:Float, scale:Float):Void;
+	static function pivot_scaled_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Int, cx:Float, cy:Float, angle:Float, scale:Float):Void;
 	static function blit(source:BITMAP_OBJECT, dest:BITMAP_OBJECT, sx:Int, sy:Int, dx:Int, dy:Int, w:Int, h:Int):Void;
 	static function stretch_blit(source:BITMAP_OBJECT, dest:BITMAP_OBJECT, sx:Int, sy:Int, sw:Int, sh:Int, dx:Int, dy:Int, dw:Int, dh:Int):Void;
 	
 	// TEXT OUTPUT
 	static function load_font(filename:String):FONT_OBJECT;
 	static function create_font(family:String):FONT_OBJECT;
-	static function textout(bitmap:BITMAP_OBJECT, f:FONT_OBJECT, s:String, x:Int, y:Int, size:Int, colour:Int, ?outline:Int, ?width:Float):Void;
-	static function textout_centre(bitmap:BITMAP_OBJECT, f:FONT_OBJECT, s:String, x:Float, y:Float, size:Float, colour:Int, ?outline:Int, ?width:Int):Void;
-	static function textout_right(bitmap:BITMAP_OBJECT, f:FONT_OBJECT, s:String, x:Float, y:Float, size:Float, colour:Int, ?outline:Int, ?width:Int):Void;
+	static function textout(bitmap:BITMAP_OBJECT, f:FONT_OBJECT, s:String, x:Float, y:Float, size:Float, colour:Int, ?outline:Int, ?width:Float):Void;
+	static function textout_centre(bitmap:BITMAP_OBJECT, f:FONT_OBJECT, s:String, x:Float, y:Float, size:Float, colour:Int, ?outline:Int, ?width:Float):Void;
+	static function textout_right(bitmap:BITMAP_OBJECT, f:FONT_OBJECT, s:String, x:Float, y:Float, size:Float, colour:Int, ?outline:Int, ?width:Float):Void;
 
 	// SOUND ROUTINES
 	static function install_sound():Void;
