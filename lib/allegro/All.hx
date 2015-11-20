@@ -1,4 +1,4 @@
-package jallegro;
+package allegro;
 
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;

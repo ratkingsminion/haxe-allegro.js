@@ -1,4 +1,4 @@
-package jallegro;
+package allegro;
 
 // added just for fun
 

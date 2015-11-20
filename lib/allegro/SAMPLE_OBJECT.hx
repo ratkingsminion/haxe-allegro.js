@@ -1,4 +1,4 @@
-package jallegro;
+package allegro;
 
 import js.html.AudioElement;
 

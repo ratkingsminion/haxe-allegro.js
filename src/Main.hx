@@ -1,8 +1,8 @@
 package;
 
-import jallegro.All;
-import jallegro.BITMAP_OBJECT;
-import jallegro.SAMPLE_OBJECT;
+import allegro.All;
+import allegro.BITMAP_OBJECT;
+import allegro.SAMPLE_OBJECT;
 
 class Main {	
 	var man:BITMAP_OBJECT;

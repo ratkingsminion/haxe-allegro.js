@@ -1,13 +1,15 @@
-/// \file jallegro.js
+/// \file allegro.js
 
 ////////////////////////////////////////////
 /// @name CONFIGURATION ROUTINES
 //@{
 
 /// Installs allegro.
-/// This function must be called before anything else, even though it does nothing.
+/// This function must be called before anything else. It makes sure Date.now() exists.
 function install_allegro()
 {
+	if (!Date.now)
+		Date.now = function now() { return new Date().getTime(); };
 	log("Allegro installed!");
 }
 
@@ -98,7 +100,7 @@ var _menu = false;
 
 /// Installs mouse handlers.
 /// Must be called after set_gfx_mode() to be able to determine mouse position within the given canvas!
-/// @param menu If true, context menu will be available on right click on jAllegro. Default is false.
+/// @param menu If true, context menu will be available on right click on canvas. Default is false.
 function install_mouse(menu)
 {
 	if (!canvas)
@@ -258,7 +260,7 @@ function install_timer()
 /// Returns number of milliseconds since 1970 started.
 function time()
 {
-	return new Date().getTime();
+	return Date.now();
 }
 
 /// Installs interrupt function.
@@ -371,10 +373,10 @@ function _progress_check()
 /// @param progress loading progress in 0.0 - 1.0 range
 function loading_bar(progress)
 {
-	rectfill(canvas,5,SCREEN_H-55,SCREEN_W-10,50,makecol(0,0,0));
-	rectfill(canvas,10,SCREEN_H-50,SCREEN_W-20,40,makecol(255,255,255));
-	rectfill(canvas,15,SCREEN_H-45,SCREEN_W-30,30,makecol(0,0,0));
-	rectfill(canvas,20,SCREEN_H-40,scaleclamp(progress,0,1,0,(SCREEN_W-40)),20,makecol(255,255,255));
+	rectfill(canvas,5,SCREEN_H-55,SCREEN_W-5,SCREEN_H-5,makecol(0,0,0));
+	rectfill(canvas,10,SCREEN_H-50,SCREEN_W-10,SCREEN_H-10,makecol(255,255,255));
+	rectfill(canvas,15,SCREEN_H-45,SCREEN_W-15,SCREEN_H-15,makecol(0,0,0));
+	rectfill(canvas,20,SCREEN_H-40,scaleclamp(progress,0,1,20,(SCREEN_W-20)),SCREEN_H-20,makecol(255,255,255));
 }
 
 /// Installs a handler to check if everything has downloaded. 
@@ -479,10 +481,11 @@ function install_keyboard(enable_keys)
 		pressed[c] = false;
 		released[c] = false;
 	}
-	window.addEventListener('keyup',_keyup);
-	window.addEventListener('keydown',_keydown);
+	document.addEventListener('keyup',_keyup);
+	document.addEventListener('keydown',_keydown);
 	_keyboard_installed = true;
-	log("Keybaord installed!");
+	log("Keyboard installed!");
+	return 0;
 }
 
 /// Uninstalls keyboard
@@ -493,10 +496,11 @@ function remove_keyboard()
 		_allog("Keyboard not installed");
 		return -1;
 	}
-	window.removeEventListener('keyup',_keyup);
-	window.removeEventListener('keydown',_keydown);
+	document.removeEventListener('keyup',_keyup);
+	document.removeEventListener('keydown',_keydown);
 	_keyboard_installed = false;
-	log("Keybaord removed!");
+	log("Keyboard removed!");
+	return 0;
 }
 
 /// key down event handler
@@ -687,7 +691,7 @@ function _strokestyle(bitmap,colour,width)
 /// @return colour in 0xAARRGGBB format
 function makecol(r,g,b,a)
 {
-	if (!a) a=255;
+	if (a==null) a=255;
 	return (a<<24)|((r&0xff)<<16)|((g&0xff)<<8)|((b&0xff));
 }
 
@@ -700,7 +704,7 @@ function makecol(r,g,b,a)
 /// @return colour in 0xAARRGGBB format
 function makecolf(r,g,b,a)
 {
-		if (!a) a=1.0;
+	if (a==null) a=1.0;
 	return makecol(r*255,g*255,b*255,a*255);
 }
 
@@ -745,7 +749,7 @@ function geta(colour)
 /// @return red component in 0.0-1.0 range
 function getrf(colour)
 {
-	return (colour>>16)&0xff;
+	return (colour>>16)&0xff/255.0;
 }
 
 /// Float (0.0-1.0) version of getg()
@@ -753,7 +757,7 @@ function getrf(colour)
 /// @return green component in 0.0-1.0 range
 function getgf(colour)
 {
-	return (colour>>8)&0xff;
+	return (colour>>8)&0xff/255.0;
 }
 
 /// Float (0.0-1.0) version of getb()
@@ -761,7 +765,7 @@ function getgf(colour)
 /// @return blue component in 0.0-1.0 range
 function getbf(colour)
 {
-	return colour&0xff;
+	return colour&0xff/255.0;
 }
 
 /// Float (0.0-1.0) version of geta()
@@ -832,7 +836,7 @@ function line(bitmap,x1,y1,x2,y2,colour,width)
 }
 
 /// Draws a vertical line.
-/// Draws a vertical line from one point to another using given colour. Probably slightly faster than line() method, since this one uses rectfill() to draw the line.
+/// Draws a vertical line from one point to another using given colour. Probably slightly faster than line() method, since this one uses fillRect() to draw the line.
 /// @param bitmap to be drawn to
 /// @param x column to draw the line to
 /// @param y1,y2 line endpoints
@@ -840,13 +844,13 @@ function line(bitmap,x1,y1,x2,y2,colour,width)
 /// @param width line width
 function vline(bitmap,x,y1,y2,colour,width)
 {
-	if (!width) width=1;
+	if (width==null) width=1;
 	_fillstyle(bitmap,colour);
 	bitmap.context.fillRect(x,y1,width,y2-y1);
 }
 
 /// Draws a horizontal line.
-/// Draws a horizontal line from one point to another using given colour. Probably slightly faster than line() method, since this one uses rectfill() to draw the line.
+/// Draws a horizontal line from one point to another using given colour. Probably slightly faster than line() method, since this one uses fillRect() to draw the line.
 /// @param bitmap to be drawn to
 /// @param y row to draw the line to
 /// @param x1,x2 line endpoints
@@ -854,7 +858,7 @@ function vline(bitmap,x,y1,y2,colour,width)
 /// @param width line width
 function hline(bitmap,x1,y,x2,colour,width)
 {
-	if (!width) width=1;
+	if (width==null) width=1;
 	_fillstyle(bitmap,colour);
 	bitmap.context.fillRect(x1,y,x2-x1,width);
 }
@@ -945,7 +949,7 @@ function polygonfill(bitmap,vertices,points,colour)
 function rect(bitmap,x1,y1,x2,y2,colour,width)
 {
 	_strokestyle(bitmap,colour,width);
-	bitmap.context.strokeRect(x1,y1,x2,y2);
+	bitmap.context.strokeRect(x1,y1,x2-x1,y2-y1);
 }
 
 /// Draws a rectangle.
@@ -957,7 +961,7 @@ function rect(bitmap,x1,y1,x2,y2,colour,width)
 function rectfill(bitmap,x1,y1,x2,y2,colour)
 {
 	_fillstyle(bitmap,colour);
-	bitmap.context.fillRect(x1,y1,x2,y2);
+	bitmap.context.fillRect(x1,y1,x2-x1,y2-y1);
 }
 
 /// Draws a circle.
@@ -1338,9 +1342,9 @@ function destroy_sample(filename)
 /// @param loop loop or not to loop
 function play_sample(sample,vol,freq,loop)
 {
-	if (!vol && vol!=0) vol=1.0;
-	if (!freq && freq!=0) freq=1.0;
-	if (!loop) loop=false;
+	if (vol==null) vol=1.0;
+	if (freq==null) freq=1.0;
+	if (loop==null) loop=false;
 	adjust_sample(sample,vol,freq,loop)
 	sample.element.currentTime = 0;
 	sample.element.play();
@@ -1440,28 +1444,23 @@ function distance2(x1,y1,x2,y2)
 }
 
 /// Distance between a point  and a line segment
-/// @param x1,y1 first end of line segment
-/// @param x2,y2 second end of line segment
-/// @param x3,y3 point coordinates
-/// @return distance of point x3,y3 from line x1,y1-x2,y2
-function linedist(x1,y1,x2,y2,x3,y3)
+/// @param ex1,ey1 first end of line segment
+/// @param ex2,ey2 second end of line segment
+/// @param x,y point coordinates
+/// @return distance of point x,y from line ex1,ey1-ex2,ey2
+function linedist(ex1,ey1,ex2,ey2,x,y)
 {
-	var px = x2-x1
-	var py = y2-y1
-  var something = px*px + py*py
-	var u =  ((x3 - x1) * px + (y3 - y1) * py) / (something)
+	var px = ex2-ex1;
+	var py = ey2-ey1;
+	var u = ((x - ex1) * px + (y - ey1) * py) / (px*px + py*py);
 	if (u > 1)
-		u = 1
+		u = 1;
 	else if (u < 0)
-		u = 0
+		u = 0;
 
-	var x = x1 + u * px
-	var y = y1 + u * py
-  var dx = x - x3
-  var dy = y - y3
-
-  var dist = Math.sqrt(dx*dx + dy*dy)
-  return dist
+	var dx = ex1 + u * px - x;
+	var dy = ey1 + u * py - y;
+	return Math.sqrt(dx*dx + dy*dy);
 }
 
 /// Linear interpolation between two values
