@@ -3,8 +3,8 @@ package allegro;
 import js.html.CanvasElement;
 import js.html.CanvasRenderingContext2D;
 
-// jAllegro was made by Sos Sosowski
-// https://github.com/TheSos/jallegro
+// allegro.js was made by Sos Sosowski
+// http://allegrojs.net
 
 @:native("window")
 @:publicFields
@@ -12,7 +12,7 @@ extern class All {
 	// CONFIGURATION ROUTINES
 	static function install_allegro():Void;
 	static function allegro_init():Void;
-	static function allegro_init_all(id:String, w:Int, h:Int, ?menu:Bool, ?enable_keys:Bool):Void;
+	static function allegro_init_all(id:String, w:Int, h:Int, ?menu:Bool, ?enable_keys:Array<Int>):Void;
 	
 	// MOUSE ROUTINES
 	static var mouse_b(default, null):Int;
