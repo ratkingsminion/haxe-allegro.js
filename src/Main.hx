@@ -16,17 +16,17 @@ class Main {
 	var score = 0;
 
 	function draw() {
-		All.draw_sprite(All.canvas, bg, 0, 0);
+		All.draw_sprite(All.canvas, bg, bg.w/2, bg.h/2);
 		All.draw_sprite(All.canvas, man, player_x, player_y);
 		All.draw_sprite(All.canvas, apple, apple_x, apple_y);
-		All.textout(All.canvas, All.font, "Score: " + score, 10, 20, 24, All.makecol(255, 255, 255));
+		All.textout(All.canvas, All.font, "Score: " + score, 10, 30, 24, All.makecol(255, 255, 255));
 	}
 
 	function update() {
-		if (All.key[All.KEY_UP]) player_y -= 4;
-		if (All.key[All.KEY_DOWN]) player_y += 4;
-		if (All.key[All.KEY_LEFT]) player_x -= 4;
-		if (All.key[All.KEY_RIGHT]) player_x += 4;
+		if (All.key[All.KEY_W] || All.key[All.KEY_UP]) player_y -= 4;
+		if (All.key[All.KEY_S] ||All.key[All.KEY_DOWN]) player_y += 4;
+		if (All.key[All.KEY_A] ||All.key[All.KEY_LEFT]) player_x -= 4;
+		if (All.key[All.KEY_D] ||All.key[All.KEY_RIGHT]) player_x += 4;
 		if (All.distance(player_x, player_y, apple_x, apple_y) < 20) {
 			All.play_sample(munch);
 			apple_x = All.rand() % (All.SCREEN_W - 32);

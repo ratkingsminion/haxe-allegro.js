@@ -92,8 +92,8 @@ extern class All {
 	static function BPM_TO_TIMER(bpm:Int):Float;
 	/// Does nothing.
 	static function install_timer():Void;
-	 ** Unix time stamp!
-	/// @return Returns number of milliseconds since 1970 started.
+	/// Unix time stamp!
+	/// @return number of milliseconds since 1970 started.
 	static function time():Int;
 	/// Installs interrupt function.
 	/// Installs a user timer handler, with the speed given as the number of milliseconds between ticks. This is the same thing as install_int_ex(proc, MSEC_TO_TIMER(speed)). Calling again this routine with the same timer handler as parameter allows you to adjust its speed.
@@ -407,8 +407,8 @@ extern class All {
 	/// @param y1 line endpoint 1
 	/// @param y2 line endpoint 2
 	/// @param colour colour in 0xAARRGGBB format
-	/// @param width line width
-	static function vline(bitmap:BITMAP_OBJECT, x:Float, y1:Float, y2:Float, colour:Int, width:Float):Void;
+	/// @param width line width (defaults to 1)
+	static function vline(bitmap:BITMAP_OBJECT, x:Float, y1:Float, y2:Float, colour:Int, ?width:Float):Void;
 	/// Draws a horizontal line.
 	/// Draws a horizontal line from one point to another using given colour. Probably slightly faster than line() method, since this one uses rectfill() to draw the line.
 	/// @param bitmap to be drawn to
@@ -416,8 +416,8 @@ extern class All {
 	/// @param x1 line endpoint 1
 	/// @param x2 line endpoint 2
 	/// @param colour colour in 0xAARRGGBB format
-	/// @param width line width
-	static function hline(bitmap:BITMAP_OBJECT, x1:Float, y:Float, x2:Float, colour:Int, width:Float):Void;
+	/// @param width line width (defaults to 1)
+	static function hline(bitmap:BITMAP_OBJECT, x1:Float, y:Float, x2:Float, colour:Int, ?width:Float):Void;
 	/// Draws a triangle.
 	/// Draws a triangle using three coordinates. The triangle is not filled.
 	/// @param bitmap to be drawn to
@@ -515,60 +515,60 @@ extern class All {
 	static function arcfill(bitmap:BITMAP_OBJECT, x:Float, y:Float, ang1:Float, ang2:Float, colour:Int, r:Float):Void;
 	
 	// BLITTING AND SPRITES ///////////////////////////////////////////////////
-	
+
 	/// Draws a sprite
-	/// This is probably the fastest method to get images on screen. 
+	/// This is probably the fastest method to get images on screen. The image will be centered. Opposed to traditional allegro approach, sprite is drawn centered.
 	/// @param bmp target bitmap
 	/// @param sprite sprite bitmap
-	/// @param x x coordinate of the top left corder of the image
-	/// @param y y coordinate of the top left corder of the image
+	/// @param x x coordinate of the top left corder of the image center
+	/// @param y y coordinate of the top left corder of the image center
 	static function draw_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float):Void;
 	/// Draws a stretched sprite
-	/// Draws a sprite stretching it to given width and height
+	/// Draws a sprite stretching it to given width and height. The sprite will be centered. You can omit sy value for uniform scaling. YOu can use negative scale for flipping. Scaling is around the center.
 	/// @param bmp target bitmap
 	/// @param sprite sprite bitmap
 	/// @param x x coordinate of the top left corder of the image
 	/// @param y y coordinate of the top left corder of the image
-	/// @param w width the sprite will be stretched to
-	/// @param h height the sprite will be stretched to
-	static function stretch_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, w:Float, h:Float):Void;
+	/// @param sx horizontal scale, 1.0 is unscaled
+	/// @param sy vertical scale (defaults to sx)
+	static function scaled_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, sx:Float, ?sy:Float):Void;
 	/// Draws a rotated sprite
-	/// Draws a sprite rotating it around its centre point.
+	/// Draws a sprite rotating it around its centre point. The sprite will be centred.
 	/// @param bmp target bitmap
 	/// @param sprite sprite bitmap
-	/// @param x x coordinate of the top left corder of the image
-	/// @param y y coordinate of the top left corder of the image
+	/// @param x x coordinate of the centre of the image
+	/// @param y y coordinate of the centre of the image
 	/// @param angle angle of rotation in degrees
 	static function rotate_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, angle:Float):Void;
 	/// Draws a sprite rotated around an arbitrary point
-	/// Draws a sprite rotating it around a given point. Opposed to traditional allegro approach, sprite is drawn with the pivot point at origin.
+	/// Draws a sprite rotating it around a given point. Sprite is drawn centered to the pivot point. The pivot point is relative to top-left corner of the image.
 	/// @param bmp target bitmap
 	/// @param sprite sprite bitmap
-	/// @param x x coordinate of the top left corder of the image
-	/// @param y y coordinate of the top left corder of the image
-	/// @param cx pivot point x coordinate (0 being in the centre of the sprite)
-	/// @param cy pivot point y coordinate (0 being in the centre of the sprite)
+	/// @param x,y target coordinates of the pivot point
+	/// @param cx,cy pivot point coordinates
 	/// @param angle angle of rotation in degrees
 	static function pivot_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, cx:Float, cy:Float, angle:Float):Void;
 	/// Draws a rotated sprite and scales it
-	/// Draws a sprite rotating it around its centre point. The sprite is also scaled.
+	/// Draws a sprite rotating it around its centre point. The sprite is also scaled. You can omit sy value for uniform scaling. You can use negative scale for flipping. Scaling is around the center. The sprite will be centred.
 	/// @param bmp target bitmap
 	/// @param sprite sprite bitmap
-	/// @param x x coordinate of the top left corder of the image
-	/// @param y y coordinate of the top left corder of the image
+	/// @param x x coordinate of the centre of the image
+	/// @param y y coordinate of the centre of the image
 	/// @param angle angle of rotation in degrees
-	/// @param scale 1.0 is unscaled
-	static function rotate_scaled_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, angle:Float, scale:Float):Void;
+	/// @param sx horizontal scale, 1.0 is unscaled
+	/// @param sy vertical scale (defaults to sx)
+	static function rotate_scaled_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Float, angle:Float, sx:Float, ?sy:Float):Void;
 	/// Draws a sprite rotated around an arbitrary point and scaled
-	/// Draws a sprite rotating it around a given point. The sprite is also scaled.
+	/// Draws a sprite rotating it around a given point. The sprite is also scaled. Sprite is drawn centered to the pivot point. The pivot point is relative to top-left corner of the image  before scaling. You can omit sy value for uniform scaling. You can use negative scale for flipping.
 	/// @param bmp target bitmap
 	/// @param sprite sprite bitmap
-	/// @param x x coordinate of the top left corder of the image
-	/// @param y y coordinate of the top left corder of the image
-	/// @param cx pivot point x coordinate (0 being in the centre of the sprite)
-	/// @param cy pivot point y coordinate (0 being in the centre of the sprite)
+	/// @param x target x coordinate of the pivot point
+	/// @param x target y coordinate of the pivot point
+	/// @param cx pivot point x coordinate
+	/// @param cx pivot point y coordinate
 	/// @param angle angle of rotation in degrees
-	/// @param scale 1.0 is unscaled
+	/// @param sx horizontal scale, 1.0 is unscaled
+	/// @param sy vertical scale (defaults to sx)
 	static function pivot_scaled_sprite(bmp:BITMAP_OBJECT, sprite:BITMAP_OBJECT, x:Float, y:Int, cx:Float, cy:Float, angle:Float, scale:Float):Void;
 	/// Blit
 	/// This is how you draw backgrounds and stuff. masked_ versions are omitted, since everything is 32-bit RGBA anyways. The source and dest parameters are swapped compared to draw_sprite for historical, 20 year old reasons that must stay the same no matter what.
@@ -581,6 +581,13 @@ extern class All {
 	/// @param w blit width
 	/// @param h blit height
 	static function blit(source:BITMAP_OBJECT, dest:BITMAP_OBJECT, sx:Int, sy:Int, dx:Int, dy:Int, w:Int, h:Int):Void;
+	/// Simple Blit
+	/// Simplified version of blit, works pretty much like draw_sprite but draws from the corner
+	/// @param source source bitmap
+	/// @param dest destination bitmap
+	/// @param dx top-left bitmap corner x coordinate in target bitmap
+	/// @param dy top-left bitmap corner y coordinate in target bitmap
+	static function simple_blit(source:BITMAP_OBJECT, dest:BITMAP_OBJECT, x:Int, y:Int):Void;
 	/// Scaled blit
 	/// Draws a scaled chunk of an image on a bitmap. It's not slower.
 	/// @param source source bitmap
@@ -597,6 +604,11 @@ extern class All {
 	
 	// TEXT OUTPUT ////////////////////////////////////////////////////////////
 	
+	/// Loads font from file.
+	/// This actually creates a style element, puts code inside and appends it to class. I heard it works all the time most of the time. AS ready() won't wait for fonts to load, this will allow you to have a font straight away with base64 data. Data should be WOFF converted to base64 without line breaks.
+	/// @param data base64 string of a WOFF file
+	/// @return font object
+	static function load_base64_font(data:String):FONT_OBJECT;
 	/// Loads font from file.
 	/// This actually creates a style element, puts code inside and appends it to class. I heard it works all the time most of the time. Note that this function won't make ready() wait, as it's not possible to consistently tell if a font has been loaded in js, thus load your fonts first thing, and everything should be fine.
 	/// @param filename Font file URL
@@ -663,7 +675,7 @@ extern class All {
 	/// Plays a sample object using given values. Note how pan is left out, as it doesn't seem to have a js counterpart. Freq will probably not work everywhere too!
 	/// @param sample sample to be played
 	/// @param vol playback volume, if omitted it's 1.0
-	/// @param freq speed, 1.0 is normal (used when omitted)
+	/// @param freq speed, 1.0 is normal and used when omitted
 	/// @param loop loop or not to loop, false when omitted
 	static function play_sample(sample:SAMPLE_OBJECT, ?vol:Float, ?freq:Float, ?loop:Bool):Void;
 	/// Adjust sample during playback
@@ -694,7 +706,7 @@ extern class All {
 	static function rand32():Int;
 	/// Returns a random number from 0.0 to 1.0 (exclusive)
 	/// This one is float. Use multiply (*) operator to get higher values. i.e. frand()*10 will return a value from 0.0 to 10.0
-	/// @return a random floating point value from 0.0 to 1.0
+	/// @return a random floating point value from 0.0 to 1.0 (exclusive)
 	static function frand():Float;
 	/// Returns absolute value of a
 	/// Removes minus sign from the value, should there be any.

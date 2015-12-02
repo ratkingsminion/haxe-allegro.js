@@ -17,16 +17,16 @@ Main.main = function() {
 };
 Main.prototype = {
 	draw: function() {
-		window.draw_sprite(window.canvas,this.bg,0,0);
+		window.draw_sprite(window.canvas,this.bg,this.bg.w / 2,this.bg.h / 2);
 		window.draw_sprite(window.canvas,this.man,this.player_x,this.player_y);
 		window.draw_sprite(window.canvas,this.apple,this.apple_x,this.apple_y);
-		window.textout(window.canvas,window.font,"Score: " + this.score,10,20,24,window.makecol(255,255,255));
+		window.textout(window.canvas,window.font,"Score: " + this.score,10,30,24,window.makecol(255,255,255));
 	}
 	,update: function() {
-		if(window.key[window.KEY_UP]) this.player_y -= 4;
-		if(window.key[window.KEY_DOWN]) this.player_y += 4;
-		if(window.key[window.KEY_LEFT]) this.player_x -= 4;
-		if(window.key[window.KEY_RIGHT]) this.player_x += 4;
+		if(window.key[window.KEY_W] || window.key[window.KEY_UP]) this.player_y -= 4;
+		if(window.key[window.KEY_S] || window.key[window.KEY_DOWN]) this.player_y += 4;
+		if(window.key[window.KEY_A] || window.key[window.KEY_LEFT]) this.player_x -= 4;
+		if(window.key[window.KEY_D] || window.key[window.KEY_RIGHT]) this.player_x += 4;
 		if(window.distance(this.player_x,this.player_y,this.apple_x,this.apple_y) < 20) {
 			window.play_sample(this.munch);
 			this.apple_x = window.rand() % (window.SCREEN_W - 32);
